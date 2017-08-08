@@ -1,0 +1,8 @@
+setup.py
+pyscribble/__init__.py
+pyscribble.egg-info/PKG-INFO
+pyscribble.egg-info/SOURCES.txt
+pyscribble.egg-info/dependency_links.txt
+pyscribble.egg-info/not-zip-safe
+pyscribble.egg-info/requires.txt
+pyscribble.egg-info/top_level.txt
