@@ -11,8 +11,5 @@ setup(
     install_requires=[
         'midiutil'
     ],
-    dependency_links=[
-        'https://github.com/Mindwerks/wildmidi/tarball/master#egg=python-s3-1.0.0'
-    ],
     zip_safe=False
 )
