@@ -8,5 +8,11 @@ setup(
     author='Blake Nedved',
     author_email='blakeanedved@gmail.com',
     packages=['pyscribble'],
+    install_requires=[
+        'midiutil'
+    ],
+    dependency_links=[
+        'https://github.com/Mindwerks/wildmidi/tarball/master#egg=python-s3-1.0.0'
+    ],
     zip_safe=False
 )
