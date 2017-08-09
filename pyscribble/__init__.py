@@ -21,6 +21,12 @@
 import random
 from midiutil import MIDIFile
 import os
+import apt
+cache = apt.Cache()
+
+wildmidi = False
+if cache['wildmidi'].is_installed:
+    wildmidi = True
 
 Notes = {
     'c':0,
@@ -137,4 +143,5 @@ def midi(Clip, filename='music.mid', tempo=140):
         os.system('clear')
 
 def play(filename='music.mid'):
-    os.system('wildmidi {}'.format(filename))
+    if wildmidi: os.system("wildmidi {}".format(filename))
+    else: print("You must install wildmidi for this feature to work.")
