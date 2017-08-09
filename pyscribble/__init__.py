@@ -46,10 +46,16 @@ class Clip_T:
     def __init__(self, midi_notes, durations, accent_map=[]):
         self.midi_notes = midi_notes
         self.durations = durations
-        self.accent_map = accent_map
-        if not self.accent_map:
+        self.accent_map = []
+        if accent_map:
+            for instruction in accent_map:
+                if instruction is "x":
+                    self.accent_map.append(127)
+                elif instruction is "-":
+                    self.accent_map.append(70)
+        else:
             for i in range(len(midi_notes)):
-                self.accent_map.append(100)
+                self.accent_map.append(127)
     def __repr__(self):
         return "midi_notes = {}\ndurations = {}\naccent_map = {}".format(self.midi_notes, self.durations, self.accent_map)
     def __add__(self, other):
