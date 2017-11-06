@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='pyscribble',
-    version='0.1',
+    version='0.1.1',
     description='A scribbletune-like library for Python3',
     url='https://github.com/blakeanedved/pyscribble',
     author='Blake Nedved',
