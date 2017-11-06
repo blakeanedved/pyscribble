@@ -1,32 +1,17 @@
-# from midiutil import MIDIFile
-
-# degrees  = [60, 62, 64, 65, 67, 69, 71, 72]  # MIDI note number
-# track    = 0
-# channel  = 0
-# time     = 0    # In beats
-# duration = 1    # In beats
-# tempo    = 140   # In BPM
-# volume   = 100  # 0-127, as per the MIDI standard
-
-# MyMIDI = MIDIFile(1)  # One track, defaults to format 1 (tempo track is created
-#                       # automatically)
-# MyMIDI.addTempo(track, time, tempo)
-
-# for i, pitch in enumerate(degrees):
-#     MyMIDI.addNote(track, channel, pitch, time + i, duration, volume)
-
-# with open("major-scale.mid", "wb") as output_file:
-#     MyMIDI.writeFile(output_file)
-
 import random
 from midiutil import MIDIFile
 import os
-import apt
-cache = apt.Cache()
+import platform
 
-wildmidi = False
-if cache['wildmidi'].is_installed:
-    wildmidi = True
+is_os_linux = False
+
+if platform.platform()[0:5] == "Linux":
+    is_os_linux = True
+    import apt
+    cache = apt.Cache()
+    wildmidi = False
+    if cache['wildmidi'].is_installed:
+        wildmidi = True
 
 Notes = {
     'c':0,
@@ -143,5 +128,8 @@ def midi(Clip, filename='music.mid', tempo=140):
         os.system('clear')
 
 def play(filename='music.mid'):
-    if wildmidi: os.system("wildmidi {}".format(filename))
-    else: print("You must install wildmidi for this feature to work.")
+    if is_os_linux:
+        if wildmidi: os.system("wildmidi {}".format(filename))
+        else: print("You must install wildmidi for this feature to work.")
+    else:
+        print("You must be using Linux for the play feature to work.")
