@@ -1,8 +1,8 @@
 # pyscribble
 A scribbletune-like library for python3
 
-## pyscribble.clip(note_list, pattern='', accent_map=None, shuffle=False)
-### note_list = ['c5','d5,'f#5','d#5']
+## pyscribble.clip(notes, pattern='', accent_map=None, shuffle=False)
+### notes = ['c5','d5,'f#5','d#5']
 note format: note (lowercase, no flats) + octave (0-10)
 you can also use nested lists to play multiple notes at once
 ### pattern = "x_--x_--x_--x_--"
