@@ -1,17 +1,9 @@
 import random
 from midiutil import MIDIFile
 import os
-import platform
-
-is_os_linux = False
-
-if platform.platform()[0:5] == "Linux":
-    is_os_linux = True
-    import apt
-    cache = apt.Cache()
-    wildmidi = False
-    if cache['wildmidi'].is_installed:
-        wildmidi = True
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+import pygame
+pygame.init()
 
 Notes = {
     'c':0,
@@ -40,9 +32,9 @@ class Clip_T:
         self.accent_map = []
         if accent_map:
             for instruction in accent_map:
-                if instruction is "x":
+                if instruction == "x":
                     self.accent_map.append(127)
-                elif instruction is "-":
+                elif instruction == "-":
                     self.accent_map.append(70)
         else:
             for i in range(len(midi_notes)):
@@ -57,14 +49,14 @@ def scale(note, scale_type, octave=5):
     pattern = ''
     num = Notes[note]
     scale_notes = [note+str(octave)]
-    if scale_type is "major":
+    if scale_type == "major":
         pattern = "wwhwwwh"
-    elif scale_type is "minor":
+    elif scale_type == "minor":
         pattern = "whwwhww"
     for instruction in pattern:
-        if instruction is "w":
+        if instruction == "w":
             num += 2
-        if instruction is "h":
+        if instruction == "h":
             num += 1
         if num > 11:
             num -= 11
@@ -77,12 +69,12 @@ def clip(notes, pattern="", accent_map=None, shuffle=False):
         random.shuffle(notes)
     midi_notes = []
     durations = []
-    if pattern is not "":
+    if pattern != "":
         p = list(pattern)
         notes_index = 0
         for instruction in p:
-            if instruction is "x":
-                if type(notes[notes_index]) is str:
+            if instruction == "x":
+                if type(notes[notes_index]) == str:
                     midi_notes.append(midi_note_number(notes[notes_index]))
                 else:
                     sub_notes = []
@@ -91,19 +83,19 @@ def clip(notes, pattern="", accent_map=None, shuffle=False):
                     midi_notes.append(sub_notes)
                 notes_index += 1
                 durations.append(1)
-            elif instruction is "-":
+            elif instruction == "-":
                 midi_notes.append(-1)
-            elif instruction is "_":
+            elif instruction == "_":
                 midi_notes.append(-1)
                 durations[len(durations)-1] += 1
-            if notes_index is len(notes):
+            if notes_index == len(notes):
                 notes_index = 0
     if accent_map is not None:
         return Clip_T(midi_notes,durations,accent_map=accent_map)
     else:
         return Clip_T(midi_notes,durations)
 
-def midi(Clip, filename='music.mid', tempo=140):
+def save(Clip, filename='music.mid', tempo=140):
     track = 0
     time = 0
     channel = 0
@@ -112,7 +104,6 @@ def midi(Clip, filename='music.mid', tempo=140):
     MIDI = MIDIFile(1)
 
     MIDI.addTempo(track, time, tempo)
-    print(Clip)
     durations_index = 0
     for i, pitch in enumerate(Clip.midi_notes):
         if type(pitch) is int:
@@ -125,11 +116,10 @@ def midi(Clip, filename='music.mid', tempo=140):
 
     with open(filename, "wb") as output_file:
         MIDI.writeFile(output_file)
-        os.system('clear')
 
 def play(filename='music.mid'):
-    if is_os_linux:
-        if wildmidi: os.system("wildmidi {}".format(filename))
-        else: print("You must install wildmidi for this feature to work.")
-    else:
-        print("You must be using Linux for the play feature to work.")
+    pygame.mixer.music.load(filename)
+    pygame.mixer.music.play()
+
+    while pygame.mixer.music.get_busy():
+        pygame.time.wait(200)
