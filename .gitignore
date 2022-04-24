@@ -1,0 +1,4 @@
+*.mid
+build
+dist
+**/__pycache__
